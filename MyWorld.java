@@ -31,8 +31,20 @@ public class MyWorld extends World
     }
     
     public void act() {
-    draw();
+      
+        generate();
+        draw();
+    
+}
+    /**
+     * Generate new world
+     */
+    public void generate() {
+        // Set the loops from 1 to 498
+        // Generate into a new world
+        
     }
+    
     /**
      * Randomize world of cells
      */
