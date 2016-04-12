@@ -1,0 +1,9 @@
+int numNeighbors = 0;
+        for (int XOffset = -1; XOffset <= 1; ++XOffset) {
+                    for (int YOffset = -1; YOffset <= 1; ++YOffset) {
+                        //System.out.println(world[xPos + XOffset][yPos + YOffset]);
+                        if (world[xPos + XOffset][yPos + YOffset]) {
+                            ++numNeighbors;
+                        }
+                    }
+        }

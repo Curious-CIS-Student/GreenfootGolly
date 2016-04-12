@@ -4,8 +4,8 @@ import java.awt.Color;
 /**
  * Write a description of class MyWorld here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Isaac Blasiman 
+ * @version 4.5.2016
  */
 public class MyWorld extends World
 {
@@ -15,6 +15,8 @@ public class MyWorld extends World
  *    Generate World
  *    Draw world
  */
+
+public boolean testVal = true;
 
  private boolean[][] world = new boolean[500][500];
  
@@ -34,15 +36,39 @@ public class MyWorld extends World
       
         generate();
         draw();
-    
-}
+   
+    }
     /**
      * Generate new world
      */
     public void generate() {
         // Set the loops from 1 to 498
         // Generate into a new world
-        
+        boolean[][] newWorld = new boolean[500][500];
+        for (int i = 1; i<499; ++i) {
+            for (int j = 1; j<499; ++j) {
+                int numNeighbors = getNeighbors(i, j);
+                
+                // System.out.println("MyValue: " + world[i][j] + " and neighbors = " + numNeighbors);
+                if (numNeighbors < 2 || numNeighbors > 3) {
+                    // "kill" cell by putting "false" in newWorld[i][j]
+                    // System.out.println("killing cell");
+                    newWorld[i][j] = false;
+                }
+                else if (numNeighbors == 3) {
+                    // create a new cell at [i][j]
+                    // System.out.println("creating cell");                    
+                    newWorld[i][j] = true;
+                }
+                else {
+                    newWorld[i][j] = world[i][j];
+                    // System.out.println("keeping cell");                    
+                    // keep cell in the new world to be the same as the cell in the old world.
+                }
+            }
+        }
+        world = newWorld;
+        testVal = false;
     }
     
     /**
@@ -57,12 +83,13 @@ public class MyWorld extends World
                 }
                 else {
                 world[i][j] = false;
+                }
             }
         }
     }
-}
+
     
-/**
+    /**
      * Draw (display) world
      */
     
@@ -80,4 +107,62 @@ public class MyWorld extends World
             }
     }
     
+    /**
+     * Calculate and return the number of neighbors of a cell. Assumes that the cell isn't on an edge.
+     * 
+     * @param  xPos  The x position of the cell.
+     * @param  yPos  The y position of the cell.
+     */
+    private int getNeighbors(int xPos, int yPos)
+    {
+        int numNeighbors = 0;
+        if(world[xPos -1][yPos-1]) {
+            ++numNeighbors;
+        }
+        if(world[xPos][yPos-1]) {
+            ++numNeighbors;
+        }
+        if(world[xPos+1][yPos-1]) {
+            ++numNeighbors;
+        }
+        if(world[xPos-1][yPos]) {
+            ++numNeighbors;
+        }
+        // skip your own location
+        if(world[xPos+1][yPos]) {
+            ++numNeighbors;
+        }
+        if(world[xPos-1][yPos+1]) {
+            ++numNeighbors;
+        }
+        if(world[xPos][yPos+1]) {
+            ++numNeighbors;
+        }
+        if(world[xPos+1][yPos+1]) {
+            ++numNeighbors;
+        }
+        return numNeighbors;
+    }
+    
+    /**
+     * Method to "kill a cell" at an XY location in the world.
+     * 
+     * @param  XPos  The x position of the cell.
+     * @param  YPos  The y position of the cell.
+     */
+    private void killCell(int XPos, int YPos)
+    {
+        world[XPos][YPos] = false;
+    }
+    
+    /**
+     * Method to "breed a cell" at an XY location in the world.
+     * 
+     * @param  XPos  The x position of the cell.
+     * @param  YPos  The y position of the cell.
+     */
+    private void breedCell(int XPos, int YPos)
+    {
+        world[XPos][YPos] = true;
+    }
 }
